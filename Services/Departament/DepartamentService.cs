@@ -1,10 +1,11 @@
-﻿using Azure;
-using ChurchApi.Data;
+﻿using ChurchApi.Data;
 using ChurchApi.Interfaces;
 using ChurchApi.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 
-namespace ChurchApi.Services;
+namespace ChurchApi.Services.Departament;
 
 public class DepartamentService:IDepartamentInterface
 {
@@ -34,18 +35,28 @@ public class DepartamentService:IDepartamentInterface
         
     }
 
-    
-    
-    
-    
-    
-    public Task<ResponseModel<List<DepartamentModel>>> GetDepartamentsForIdMember(int MemberId)
+    public async Task<ResponseModel<DepartamentModel>> GetDepartamentById(int departamentId)
     {
-        throw new NotImplementedException();
-    }
+        ResponseModel<DepartamentModel> response = new ResponseModel<DepartamentModel>();
+        try
+        {
+            var departament = await _context.Departaments.FirstOrDefaultAsync(x => x.Id == departamentId);
+            if (departament == null)
+            {
+                response.Message = "Departamento não encontrado";
+                return response;
+            }
 
-    public Task<ResponseModel<DepartamentModel>> GetDepartamtsForId(int DepartamentId)
-    {
-        throw new NotImplementedException();
+            response.Data = departament;
+            response.Message = "Departamento Encontrado";
+            return response;
+
+        }
+        catch (Exception e)
+        {
+            response.Message = e.Message;
+            response.Status = false;
+            return response;
+        }
     }
 }
