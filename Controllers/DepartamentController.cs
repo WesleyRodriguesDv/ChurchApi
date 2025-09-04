@@ -1,7 +1,5 @@
 using ChurchApi.Interfaces;
 using ChurchApi.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChurchApi.Controllers
@@ -22,6 +20,13 @@ namespace ChurchApi.Controllers
         {
             var departaments = await _departamentInterface.GetDepartaments();
             return Ok(departaments);
+        }
+
+        [HttpGet("GetDepartamentById")]
+        public async Task<ActionResult<ResponseModel<DepartamentModel>>> GetDepartamentById(int departamentId)
+        {
+            var departament = await _departamentInterface.GetDepartamentById(departamentId);
+            return Ok(departament);
         }
     }
 }
