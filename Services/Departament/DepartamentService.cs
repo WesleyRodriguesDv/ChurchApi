@@ -1,8 +1,8 @@
-﻿using ChurchApi.Data;
+﻿using Azure.Identity;
+using ChurchApi.Data;
+using ChurchApi.DTOs.Departament;
 using ChurchApi.Interfaces;
 using ChurchApi.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChurchApi.Services.Departament;
@@ -59,4 +59,27 @@ public class DepartamentService:IDepartamentInterface
             return response;
         }
     }
-}
+
+    public async Task<ResponseModel<DepartamentModel>> CreateDepartament(DepartamentCreateDTO departamentCreateDto)
+    {
+        ResponseModel<DepartamentModel> response = new ResponseModel<DepartamentModel>();
+        try
+        {
+            var departament = new DepartamentModel()
+            {
+                Name = departamentCreateDto.Name
+            };
+
+            _context.Add(departament);
+            await _context.SaveChangesAsync();
+            response.Message = "Departamento criado com sucesso! ";
+            return response;
+        }
+        catch (Exception e)
+        {
+            response.Message = e.Message;
+            response.Status = false;
+            return response;
+        }            
+    }                        
+}                                       
