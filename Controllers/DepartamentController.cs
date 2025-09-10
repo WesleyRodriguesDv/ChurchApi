@@ -1,3 +1,4 @@
+using ChurchApi.DTOs.Departament;
 using ChurchApi.Interfaces;
 using ChurchApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,13 @@ namespace ChurchApi.Controllers
         public async Task<ActionResult<ResponseModel<DepartamentModel>>> GetDepartamentById(int departamentId)
         {
             var departament = await _departamentInterface.GetDepartamentById(departamentId);
+            return Ok(departament);
+        }
+
+        [HttpPost("DepartamentCreate")]
+        public async Task<ActionResult<ResponseModel<DepartamentModel>>> DepartamentCreate(DepartamentCreateDTO departamentCreateDto)
+        {
+            var departament = await _departamentInterface.CreateDepartament(departamentCreateDto);
             return Ok(departament);
         }
     }
