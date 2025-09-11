@@ -23,17 +23,31 @@ namespace ChurchApi.Controllers
             return Ok(departaments);
         }
 
-        [HttpGet("GetDepartamentById")]
+        [HttpGet("GetBy/{departamentId}")]
         public async Task<ActionResult<ResponseModel<DepartamentModel>>> GetDepartamentById(int departamentId)
         {
             var departament = await _departamentInterface.GetDepartamentById(departamentId);
             return Ok(departament);
         }
 
-        [HttpPost("DepartamentCreate")]
-        public async Task<ActionResult<ResponseModel<DepartamentModel>>> DepartamentCreate(DepartamentCreateDTO departamentCreateDto)
+        [HttpPost("Create")]
+        public async Task<ActionResult<ResponseModel<DepartamentModel>>> CreateDepartament(DepartamentCreateDTO departamentCreateDto)
         {
             var departament = await _departamentInterface.CreateDepartament(departamentCreateDto);
+            return Ok(departament);
+        }
+
+        [HttpPut("Edit")]
+        public async Task<ActionResult<DepartamentModel>> EditDepartament(DepartamentEditDTO departamentEditDto)
+        {
+            var departament = await _departamentInterface.EditDepartament(departamentEditDto);
+            return Ok(departament);
+        }
+
+        [HttpDelete("Delete/{departamentId}")]
+        public async Task<ActionResult<DepartamentModel>> DeleteDepartament(int departamentId)
+        {
+            var departament = await _departamentInterface.DeleteDepartament(departamentId);
             return Ok(departament);
         }
     }
