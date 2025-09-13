@@ -1,7 +1,9 @@
 ﻿using ChurchApi.Data;
+using ChurchApi.DTOs.Member;
 using ChurchApi.Interfaces;
 using ChurchApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal;
 
 namespace ChurchApi.Services.Members;
 
@@ -57,5 +59,10 @@ public class MemberService: IMemberInterface
             response.Status = false;
             return response;
         }
+    }
+
+    public Task<ResponseModel<MemberModel>> CreateMember(MemberCreateDTO memberCreateDto)
+    {
+        throw new NotImplementedException();
     }
 }
