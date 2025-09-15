@@ -61,14 +61,14 @@ public class DepartamentService:IDepartamentInterface
         }
     }
 
-    public async Task<ResponseModel<DepartamentModel>> CreateDepartament(DepartamentCreateDTO departamentCreateDto)
+    public async Task<ResponseModel<DepartamentModel>> CreateDepartament(DepartamentDTO departamentDTO)
     {
         ResponseModel<DepartamentModel> response = new ResponseModel<DepartamentModel>();
         try
         {
             var departament = new DepartamentModel()
             {
-                Name = departamentCreateDto.Name
+                Name = departamentDTO.Name
             };
 
             _context.Add(departament);
@@ -84,19 +84,19 @@ public class DepartamentService:IDepartamentInterface
         }            
     }
     
-    public async Task<ResponseModel<DepartamentModel>> EditDepartament(DepartamentEditDTO departamentEditDto)
+    public async Task<ResponseModel<DepartamentModel>> EditDepartament(DepartamentDTO departamentDto)
     {
         ResponseModel<DepartamentModel> response = new ResponseModel<DepartamentModel>();
         try
         {
-            var departament = await _context.Departaments.FirstOrDefaultAsync(x => x.Id == departamentEditDto.Id);
+            var departament = await _context.Departaments.FirstOrDefaultAsync(x => x.Id == departamentDto.Id);
             if (departament == null)
             {
                 response.Message = "Departamento não encontrado!";
                 response.Status = false;
             }
 
-            departament.Name = departamentEditDto.Name;
+            departament.Name = departamentDto.Name;
             _context.Update(departament);
             await _context.SaveChangesAsync();
 

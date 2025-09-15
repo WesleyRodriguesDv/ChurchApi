@@ -22,7 +22,9 @@ public class MemberService: IMemberInterface
         ResponseModel<List<MemberModel>> response = new ResponseModel<List<MemberModel>>();
         try
         {
-            var members = await _context.Members.ToListAsync();
+            var members = await _context.Members
+                .Include(x => x.Departament)
+                .ToListAsync();
             response.Data = members;
             response.Message = "Todos os membros foram listados com sucesso!";
             return response;
@@ -40,7 +42,9 @@ public class MemberService: IMemberInterface
         ResponseModel<MemberModel> response = new ResponseModel<MemberModel>();
         try
         {
-            var member = await _context.Members.FirstOrDefaultAsync(x => x.Id == memberId);
+            var member = await _context.Members
+                .Include(x => x.Departament)
+                .FirstOrDefaultAsync(x => x.Id == memberId);
             if (member == null)
             {
                 response.Message = "Membro não encontrado";
@@ -61,8 +65,82 @@ public class MemberService: IMemberInterface
         }
     }
 
-    public Task<ResponseModel<MemberModel>> CreateMember(MemberCreateDTO memberCreateDto)
+    public async Task<ResponseModel<List<MemberModel>>> CreateMember(MemberCreateDto memberCreateDto)
     {
-        throw new NotImplementedException();
+
+        ResponseModel<List<MemberModel>> response = new ResponseModel<List<MemberModel>>();
+        try
+        {
+            var departament = await _context.Departaments.FirstOrDefaultAsync(x => x.Id == memberCreateDto.Departament.Id);
+            
+            if (departament == null)
+            {
+                
+                response.Message = "Departamento não encontrado! ";
+                return response;
+            }
+
+            var member = new MemberModel()
+            {
+                Name = memberCreateDto.Name,
+                LastName = memberCreateDto.LastName,
+                Departament = departament
+            };
+            
+            _context.Add(member);
+            await _context.SaveChangesAsync();
+
+            response.Data = await _context.Members
+                .Include(x => x.Departament).ToListAsync();
+            response.Message = "Membro cadastrado com sucesso";
+            return response;
+        }
+        catch (Exception e)
+        {
+            response.Message = e.Message;
+            response.Status = false;
+            return response;
+        }
+    }
+
+    public async Task<ResponseModel<MemberModel>> EditMember(MemberEditDto memberEditDto)
+    {
+        ResponseModel<MemberModel> response = new ResponseModel<MemberModel>();
+        try
+        {
+            var member = await _context.Members
+                .Include(x => x.Departament)
+                .FirstOrDefaultAsync(x => x.Id == memberEditDto.Id);
+
+            var departament = await _context.Departaments
+                .FirstOrDefaultAsync(x => x.Id == memberEditDto.Departament.Id);
+
+            if (member is null)
+            {
+                response.Message = "Membro não encontrado";
+            }
+
+            if (departament is null)
+            {
+                response.Message = "Departamento não encontrado";
+            }
+
+            member.Name = memberEditDto.Name;
+            member.LastName = memberEditDto.LastName;
+            member.Departament = departament;
+
+            _context.Update(member);
+            await _context.SaveChangesAsync();
+
+            response.Data = member;
+            response.Message = "Membro atualizado com sucesso!";
+            return response;
+        }
+        catch (Exception e)
+        {
+            response.Message = e.Message;
+            response.Status = false;
+            return response;
+        }
     }
 }
