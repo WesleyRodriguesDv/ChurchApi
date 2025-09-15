@@ -1,6 +1,6 @@
 ﻿namespace ChurchApi.DTOs.Departament;
 
-public class DepartamentEditDTO
+public class DepartamentDTO
 {
     public string Name { get; set; }
     public int Id { get; set; }
