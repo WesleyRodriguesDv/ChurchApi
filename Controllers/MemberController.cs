@@ -1,3 +1,4 @@
+using ChurchApi.DTOs.Member;
 using ChurchApi.Interfaces;
 using ChurchApi.Models;
 using Microsoft.AspNetCore.Http;
@@ -27,6 +28,20 @@ namespace ChurchApi.Controllers
         public async Task<ActionResult<ResponseModel<MemberModel>>> GetMemberById(int memberId)
         {
             var member = await _memberInterface.GetMemberById(memberId);
+            return Ok(member);
+        }
+
+        [HttpPost("Create")]
+        public async Task<ActionResult<ResponseModel<List<MemberModel>>>> CreateMember(MemberCreateDto memberCreateDto)
+        {
+            var member = await _memberInterface.CreateMember(memberCreateDto);
+            return Ok(member);
+        }
+
+        [HttpPut("Edit")]
+        public async Task<ActionResult<ResponseModel<MemberModel>>> EditMember(MemberEditDto memberEditDto)
+        {
+            var member = await _memberInterface.EditMember(memberEditDto);
             return Ok(member);
         }
     }

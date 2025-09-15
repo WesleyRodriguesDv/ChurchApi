@@ -31,16 +31,16 @@ namespace ChurchApi.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<ResponseModel<DepartamentModel>>> CreateDepartament(DepartamentCreateDTO departamentCreateDto)
+        public async Task<ActionResult<ResponseModel<DepartamentModel>>> CreateDepartament(DepartamentDTO departamentDto)
         {
-            var departament = await _departamentInterface.CreateDepartament(departamentCreateDto);
+            var departament = await _departamentInterface.CreateDepartament(departamentDto);
             return Ok(departament);
         }
 
         [HttpPut("Edit")]
-        public async Task<ActionResult<DepartamentModel>> EditDepartament(DepartamentEditDTO departamentEditDto)
+        public async Task<ActionResult<DepartamentModel>> EditDepartament(DepartamentDTO departamentDto)
         {
-            var departament = await _departamentInterface.EditDepartament(departamentEditDto);
+            var departament = await _departamentInterface.EditDepartament(departamentDto);
             return Ok(departament);
         }
 
