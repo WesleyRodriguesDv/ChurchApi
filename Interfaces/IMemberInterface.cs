@@ -9,5 +9,7 @@ public interface IMemberInterface
 
     Task<ResponseModel<MemberModel>> GetMemberById(int memberId);
 
-    Task<ResponseModel<MemberModel>> CreateMember(MemberCreateDTO memberCreateDto);
+    Task<ResponseModel<List<MemberModel>>> CreateMember(MemberCreateDto memberCreateDto);
+
+    Task<ResponseModel<MemberModel>> EditMember(MemberEditDto memberEditDto);
 }
