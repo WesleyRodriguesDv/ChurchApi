@@ -143,4 +143,30 @@ public class MemberService: IMemberInterface
             return response;
         }
     }
+
+    public async Task<ResponseModel<MemberModel>> DeleteMember(int memberId)
+    {
+        ResponseModel<MemberModel> response = new ResponseModel<MemberModel>();
+        try
+        {
+            var member = await _context.Members.FirstOrDefaultAsync(x => x.Id == memberId);
+            if (member is null)
+            {
+                response.Message = "Departamento não encontrado!";
+                return response;
+            }
+
+            _context.Remove(member);
+            await _context.SaveChangesAsync();
+
+            response.Message = "Membro excluído com sucesso!";
+            return response;
+        }
+        catch (Exception e)
+        {
+            response.Message = e.Message;
+            response.Status = false;
+            return response;
+        }
+    }
 }
