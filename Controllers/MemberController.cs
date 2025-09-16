@@ -44,5 +44,12 @@ namespace ChurchApi.Controllers
             var member = await _memberInterface.EditMember(memberEditDto);
             return Ok(member);
         }
+
+        [HttpDelete("Delete/{memberId}")]
+        public async Task<ActionResult<ResponseModel<MemberModel>>> DeleteMember(int memberId)
+        {
+            var member = await _memberInterface.DeleteMember(memberId);
+            return Ok(member);
+        }
     }
 }
